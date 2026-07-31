@@ -3142,6 +3142,9 @@ class InstanceObject extends Instance {
       parent: this,
       value: clone(value)
     });
+    if (!isObject$1(this.value)) {
+      this.value = {};
+    }
     this.children.push(instance);
     this.value[key] = instance.getValue();
     const deactivateNonRequired = getSchemaXOption(this.schema, "deactivateNonRequired") ?? this.jedison.getOption("deactivateNonRequired");
@@ -3241,10 +3244,10 @@ class InstanceObject extends Instance {
   refreshInstances(initiator) {
     const wasRefreshing = this.refreshingInstances;
     this.refreshingInstances = true;
-    const value = this.getValue();
+    let value = this.getValue();
     if (!isObject$1(value)) {
-      this.refreshingInstances = wasRefreshing;
-      return;
+      value = {};
+      this.value = value;
     }
     const childMap = /* @__PURE__ */ new Map();
     for (const child of this.children) {
