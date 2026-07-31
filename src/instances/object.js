@@ -20,6 +20,10 @@ class InstanceObject extends Instance {
     this.schemaPatternProperties = getSchemaPatternProperties(this.schema)
     this.schemaAdditionalProperties = getSchemaAdditionalProperties(this.schema)
 
+    if (!isObject(this.value)) {
+      this.value = {}
+    }
+
     const schemaProperties = getSchemaProperties(this.schema)
     const schemaRequired = getSchemaRequired(this.schema)
 
@@ -159,6 +163,10 @@ class InstanceObject extends Instance {
       value: clone(value)
     })
 
+    if (!isObject(this.value)) {
+      this.value = {}
+    }
+
     this.children.push(instance)
     this.value[key] = instance.getValue()
 
@@ -295,11 +303,11 @@ class InstanceObject extends Instance {
     const wasRefreshing = this.refreshingInstances
     this.refreshingInstances = true
 
-    const value = this.getValue()
+    let value = this.getValue()
 
     if (!isObject(value)) {
-      this.refreshingInstances = wasRefreshing
-      return
+      value = {}
+      this.value = value
     }
 
     // Build child lookup map once to avoid repeated linear scans

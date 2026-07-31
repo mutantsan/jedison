@@ -3030,6 +3030,9 @@ class InstanceObject extends Instance {
     this.requiredProperties = /* @__PURE__ */ new Set();
     this.schemaPatternProperties = getSchemaPatternProperties(this.schema);
     this.schemaAdditionalProperties = getSchemaAdditionalProperties(this.schema);
+    if (!isObject$1(this.value)) {
+      this.value = {};
+    }
     const schemaProperties = getSchemaProperties(this.schema);
     const schemaRequired = getSchemaRequired(this.schema);
     const initialValue = clone(this.value);
